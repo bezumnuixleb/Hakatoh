@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_RenderSetLogicalSize(renderer, WINDOW_SIZE_W, WINDOW_SIZE_H);
 	bool isRunning = true;
-
+	int wind = 0;
 	SDL_SetRenderDrawColor(renderer, 255, 76, 0, 0);
 
 	while (isRunning)
@@ -29,6 +29,19 @@ int main(int argc, char** argv)
 			}
 			}
 		}
+		if (wind==0)//вращение круга 
+		{
+
+		}
+		if (wind == 1)//окно боя
+		{
+
+		}
+		if (wind == 2)//главное меню
+		{
+
+		}
+
 
 		SDL_RenderPresent(renderer);
 		SDL_RenderClear(renderer);
