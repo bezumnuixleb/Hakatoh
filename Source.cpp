@@ -117,17 +117,22 @@ int main(int argc, char** argv)
 					}
 					else
 					{
-						if (rotatelifetime > 0)
+						if (rotatelifetime < 0)
 						{
 							circletexturepos++;
-							wheltextpos.x = 900*circletexturepos-900;
+							if (circletexturepos>6)
+							{
+								circletexturepos = 0;
+							}
+							wheltextpos.x = 900*circletexturepos;
 							if (wheltextpos.x>5400)
 							{
 								wheltextpos.x = 0;
 							}
 							//povorot texturi kolesa na 1 segment
 							rotatelifetime = 2000;
-							SDL_Delay(200);
+							
+							
 						}
 						else
 						{
@@ -138,6 +143,8 @@ int main(int argc, char** argv)
 
 					//
 				}
+
+			
 				SDL_RenderCopy(renderer, backgroundwheel, NULL, NULL);//render zadnika
 				SDL_RenderCopy(renderer, textwheel, &wheltextpos,NULL );//render colesa
 				SDL_RenderCopy(renderer, pointer,NULL, &pointerPos);//render player
@@ -147,6 +154,7 @@ int main(int argc, char** argv)
 				SDL_RenderCopy(renderer, cubetext, &cubetextpos, &cuberend );
 				SDL_RenderPresent(renderer);
 				SDL_RenderClear(renderer);
+				cubepress = false;
 			}
 			if (wind == 1)//окно боя
 			{
