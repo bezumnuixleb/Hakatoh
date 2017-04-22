@@ -10,8 +10,9 @@ struct Player
 	int uron = 0;
 	int spal_uron = 0;
 	int mane = 0;
-	int score = 0;
+	int exp = 0;
 	bool xod = true;
+	int lvl = 0;
 };
 
 void Udar_P(Player *pl, Vrag *v);

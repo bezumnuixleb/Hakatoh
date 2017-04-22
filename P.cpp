@@ -37,6 +37,7 @@ void initPlayer(Player *pl)
 	pl->mana = 100;
 	pl->uron = 10;
 	pl->spal_uron = 10;
-	pl->score = 0;
+	pl->exp = 0;
 	pl->mane = 0;
+	pl->lvl = 0;
 }
