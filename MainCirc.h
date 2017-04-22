@@ -11,4 +11,4 @@ struct Circle
 };
 
 bool startispressed(SDL_Point mpos,bool shop);
-void sobitie(int circlepos, Player *igrok, int *wind, int *tovar1, int *tovar2);
+void sobitie(int circlepos, Player *igrok, int *wind, int *tovar1, int *tovar2,bool *fightstart);

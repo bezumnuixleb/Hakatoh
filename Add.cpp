@@ -3,6 +3,7 @@
 #include <iostream>
 #include "SDL.h"
 #include "SDL_image.h"
+#include "SDL_ttf.h"
 
 int getrand(int a, int b)
 {
@@ -22,4 +23,14 @@ SDL_Texture *addtext(SDL_Renderer* rend, SDL_Surface* temp)
 {
 	SDL_Texture *text = SDL_CreateTextureFromSurface(rend, temp);
 	return text;
+}
+
+void rendWord(SDL_Renderer * rend, SDL_Rect Pos, int a,TTF_Font *font)
+{
+	char buf[255];
+	_itoa_s(a, buf, 255, 10);
+	SDL_Color TextColor = { 255,255,255 };
+	SDL_Surface* temp = TTF_RenderText_Solid(font, buf, TextColor);
+	SDL_Texture* textrend = SDL_CreateTextureFromSurface(rend, temp);
+	SDL_RenderCopy(rend, textrend, NULL, &Pos);
 }

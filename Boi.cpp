@@ -3,7 +3,7 @@
 #include "Boi.h"
 
 
-void draka_P(Player *pl, Vrag *v,int nagatie)
+void draka_P(Player *pl, Vrag *v,int nagatie,int *ev)
 {
 	if (pl->xod == true)
 	{
@@ -12,31 +12,36 @@ void draka_P(Player *pl, Vrag *v,int nagatie)
 			Udar_P(pl,v);
 			pl->xod = false;
 			v->xod = true;
+			*ev = 0;
 		}
 		else if (nagatie == 1)
 		{
 			Kast_P(pl, v);
 			pl->xod = false;
 			v->xod = true;
+			*ev = 1;
 		}
 		else if (nagatie == 2)
 		{
 			Up_bron_P(pl, v);
 			pl->xod = false;
 			v->xod = true;
+			*ev = 2;
 		}
 		else if (nagatie == 3)
 		{
 			Liv_P(pl, v);
+			*ev = 3;
 		}
-		if (nagatie == -1)
+		else if (nagatie == -1)
 		{
-			pl->xod = false;
-			v->xod = true;
+			pl->xod = true;
+			v->xod =false;
+			*ev = -1;
 		}
 	}
 }
-void draka_V(Player *pl, Vrag *v)
+void draka_V(Player *pl, Vrag *v, int *ev)
 {
 	srand(time(NULL));
 	if (v->xod == true)
@@ -45,33 +50,46 @@ void draka_V(Player *pl, Vrag *v)
 		if (v->nagatie == 0)
 		{
 			Udar_V(pl, v);
+			pl->xod = true;
+			v->xod = false;
+			*ev = 0;
 		}
 		else if (v->nagatie == 1)
 		{
 			Kast_V(pl, v);
+			pl->xod = true;
+			v->xod = false;
+			*ev = 1;
 		}
-		else if (v->nagatie == 2)
-		{
-			Up_bron_V(pl, v);
-		}
+		
 	}
 }
 
 //player
 void Udar_P(Player *pl, Vrag *v)
 {
-	v->hp += v->brony - pl->uron;
+	if (pl->uron - v->brony > 0) {
+		v->hp -= pl->uron - v->brony;
+	}
+	else
+	{
+		v->hp -= 2;
+		return;
+	}
 }
 void Kast_P(Player *pl, Vrag *v)
 {
-	if (pl->mana < 30)
+	if (pl->mana < 40)
+	{
+		Udar_P(pl, v);
 		return;
+	}
 	v->hp -= pl->spal_uron;
-	pl->mana -= 30;
+	pl->mana -= 40;
 }
 void Up_bron_P(Player *pl, Vrag *v)
 {
-	pl->brony += 3;
+	pl->brony += 20;
 }
 void Liv_P(Player *pl, Vrag *v)
 {
@@ -92,30 +110,43 @@ void initPlayer(Player *pl)
 	pl->hp = 100;
 	pl->mana = 100;
 	pl->uron = 10;
-	pl->spal_uron = 10;
+	pl->spal_uron = 25;
 	pl->exp = 0;
 	pl->mane = 0;
 	pl->lvl = 1;
-	
+	pl->maxmana = 100;
 }
 //enemy
 void Udar_V(Player *pl, Vrag *v)
 {
-	pl->hp += pl->brony - v->uron;
+
+	if (pl->uron - v->brony < 0) {
+		pl->hp = pl->uron - v->brony;
+	}
+	else
+	{
+		pl->hp -= 2;
+		return;
+	}
 }
 void Kast_V(Player *pl, Vrag *v)
 {
-	if (v->mana < 30)
+	if (v->mana < 40)
+	{
+		Udar_V(pl, v);
 		return;
+	}
 	pl->hp -= v->spal_uron;
-	v->mana -= 30;
+	v->mana -= 40;
+
 }
 void Up_bron_V(Player *pl, Vrag *v)
 {
-	v->brony += 3;
+	v->brony +=20;
 }
 void initMob(Vrag *v, int a)
 {
+	
 	if (a == 0)
 	{
 		strcpy_s(v->mas, "Mob1");//танк
@@ -123,6 +154,7 @@ void initMob(Vrag *v, int a)
 		v->mana = 30;
 		v->brony = 10;
 		v->uron = 25;
+		v->maxmana = 30;
 	}
 	else if (a == 1)
 	{
@@ -131,6 +163,7 @@ void initMob(Vrag *v, int a)
 		v->mana = 120;
 		v->brony = 3;
 		v->uron = 35;
+		v->maxmana = 120;
 	}
 	else if (a == 2)
 	{
@@ -139,14 +172,16 @@ void initMob(Vrag *v, int a)
 		v->mana = 100;
 		v->brony = 5;
 		v->uron = 10;
+		v->maxmana = 100;
 	}
 	else if (a == 3)
 	{
 		strcpy_s(v->mas, "Mob4");//танк
 		v->hp = 350;
-		v->mana = 10;
+		v->mana = 30;
 		v->brony = 16;
 		v->uron = 5;
+		v->maxmana = 10;
 	}
 	else if (a == 4)
 	{
@@ -155,6 +190,7 @@ void initMob(Vrag *v, int a)
 		v->mana = 120;
 		v->brony = 3;
 		v->uron = 7;
+		v->maxmana = 120;
 	}
 	else if (a == 10)
 	{
@@ -163,5 +199,6 @@ void initMob(Vrag *v, int a)
 		v->mana = 250;
 		v->brony = 12;
 		v->uron = 50;
+		v->maxmana = 250;
 	}
 }
