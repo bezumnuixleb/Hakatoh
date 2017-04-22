@@ -5,3 +5,5 @@
 
 
 void glswitch(int*wind, SDL_Point mpos);
+
+int battleswitch(SDL_Point mpos);

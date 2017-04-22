@@ -6,6 +6,8 @@
 #include "Mouse.h"
 #include "SDL_ttf.h"
 #include <time.h>
+#include "Boi.h"
+#include "V.h"
 
 #define WINDOW_SIZE_W 900
 #define WINDOW_SIZE_H 900
@@ -22,15 +24,17 @@ int main(int argc, char** argv)
 	TTF_Font * font = TTF_OpenFont("eng.ttf", 25);//shrift
 	//text init
 	bool isRunning = true;
-	int wind = 0;
+	int wind = 0,int vragnum;
 	Player igrok;
 	SDL_Point mousepos;
+	Vrag enemy;
 	int lastTicks = SDL_GetTicks();
 	SDL_SetRenderDrawColor(renderer, 255, 76, 0, 0);
 	int circlepos = 0,circletexturepos=0;
 	int tmpCub = 0, pressedbutonfight = -1;
-	float cubiklifetime = 0;
+	float cubiklifetime = 0,rotatelifetime=0;
 	bool rotate = false;
+	initPlayer(&igrok);
 	while (isRunning)
 	{
 		SDL_Event ev;
@@ -72,10 +76,17 @@ int main(int argc, char** argv)
 					rotate = false;
 				}
 				else
-				{
-					circletexturepos++;
-					//povorot texturi kolesa na 1 segment
-
+				{	
+					if (rotatelifetime < 0)
+					{
+						circletexturepos++;
+						//povorot texturi kolesa na 1 segment
+						rotatelifetime = 2000;
+					}
+					else
+					{
+						rotatelifetime -= dt;
+					}
 				}
 				//ogranichenie segmenta
 				
@@ -96,8 +107,17 @@ int main(int argc, char** argv)
 			int currentTicks = SDL_GetTicks();
 			double dt = (currentTicks - lastTicks)*0.001;
 			lastTicks = currentTicks;
-
-
+			vragnum = getrand(0, 4);
+			initMob(&enemy, vragnum);
+			if (igrok.xod==true&&enemy.xod==false)
+			{
+				draka_P(&igrok, &enemy, battleswitch(mousepos));
+			}
+			if (igrok.xod==false&& enemy.xod ==true)
+			{
+				draka_V(&igrok, &enemy, 0);
+			}
+			
 			pressedbutonfight;
 
 
