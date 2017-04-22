@@ -8,7 +8,9 @@ void Udar_V(Player *pl, Vrag *v)
 }
 void Kast_V(Player *pl, Vrag *v)
 {
-	pl->hp += pl->brony - v->spal_uron;
+	if (v->mana < 30)
+		return;
+	pl->hp -= v->spal_uron;
 	v->mana -= 30;
 }
 void Up_bron_V(Player *pl, Vrag *v)

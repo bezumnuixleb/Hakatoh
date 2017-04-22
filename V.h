@@ -10,6 +10,8 @@ struct Vrag
 	int uron = 5;
 	int spal_uron = 12;
 	bool xod = false;
+	int nagatie;
+	double aut = 0;
 };
 
 void Udar_V(Player *pl, Vrag *v);
