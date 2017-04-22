@@ -1,8 +1,11 @@
 #include <iostream>
 #include "SDL.h"
+#include "MainCirc.h"
+#include "Add.h"
+#include "P.h"
 
-#define WINDOW_SIZE_W 1280
-#define WINDOW_SIZE_H 1024
+#define WINDOW_SIZE_W 900
+#define WINDOW_SIZE_H 900
 
 int main(int argc, char** argv)
 {
@@ -13,9 +16,13 @@ int main(int argc, char** argv)
 	SDL_RenderSetLogicalSize(renderer, WINDOW_SIZE_W, WINDOW_SIZE_H);
 	bool isRunning = true;
 	int wind = 0;
+	Player igrok;
 	SDL_Point mousepos;
+	int lastTicks = SDL_GetTicks();
 	SDL_SetRenderDrawColor(renderer, 255, 76, 0, 0);
-	int circlepos = 0;
+	int circlepos = 0,circletexturepos=0;
+	int tmpCub = 0, pressedbutonfight = -1;
+	float cubiklifetime = 0;
 	bool rotate = false;
 	while (isRunning)
 	{
@@ -38,23 +45,71 @@ int main(int argc, char** argv)
 		}
 		if (wind==0)//вращение круга 
 		{
-			if (rotate == false)
+			int currentTicks = SDL_GetTicks();
+			double dt = (currentTicks - lastTicks)*0.001;
+			lastTicks = currentTicks;
+
+			if (startispressed(mousepos)&&rotate==false)
 			{
-				
+				tmpCub=getrand(1, 6);
+				circlepos += tmpCub;
+				//ogranichenie segmenta
+
+				cubiklifetime = 4000;
+				rotate == true;
 			}
+			if (rotate == true)
+			{
+				if (circletexturepos == circlepos)
+				{
+					rotate = false;
+				}
+				else
+				{
+					circletexturepos++;
+					//povorot texturi kolesa na 1 segment
+
+				}
+				//ogranichenie segmenta
+				
+			//
+			}
+
+			//render zadnika
+			//render colesa
+			//render player
+			//render stats,money
+			//render cubika
+
+			SDL_RenderPresent(renderer);
+			SDL_RenderClear(renderer);
 		}
 		if (wind == 1)//окно боя
 		{
+			int currentTicks = SDL_GetTicks();
+			double dt = (currentTicks - lastTicks)*0.001;
+			lastTicks = currentTicks;
 
+
+			pressedbutonfight;
+
+
+			SDL_RenderPresent(renderer);
+			SDL_RenderClear(renderer);
 		}
 		if (wind == 2)//главное меню
 		{
+			int currentTicks = SDL_GetTicks();
+			double dt = (currentTicks - lastTicks)*0.001;
+			lastTicks = currentTicks;
+			glswitch(&wind,mousepos);
+			//render glmeny
 
+			SDL_RenderPresent(renderer);
+			SDL_RenderClear(renderer);
 		}
 
 
-		SDL_RenderPresent(renderer);
-		SDL_RenderClear(renderer);
 	}
 
 
