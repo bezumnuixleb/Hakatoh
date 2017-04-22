@@ -2,12 +2,10 @@
 #include "SDL.h"
 #include "MainCirc.h"
 #include "Add.h"
-#include "P.h"
 #include "Mouse.h"
 #include "SDL_ttf.h"
 #include <time.h>
 #include "Boi.h"
-#include "V.h"
 
 #define WINDOW_SIZE_W 900
 #define WINDOW_SIZE_H 900
@@ -28,7 +26,11 @@ int main(int argc, char** argv)
 	SDL_Texture* backgroundwheel = addtext(renderer, temp);
 	temp = IMG_Load("./pointer.png");
 	SDL_Texture* pointer = addtext(renderer, temp);
+	temp = IMG_Load("./cube.png");
+	SDL_Texture* cubetext = addtext(renderer, temp);
 	SDL_Rect wheltextpos = { 0,0,900,900 };
+	SDL_Rect cubetextpos = {0,0,200,200};
+	SDL_Rect cuberend = { 353,371,200,200 };
 	SDL_Rect pointerPos = { 700,370,200,200 };
 	//text init
 	SDL_FreeSurface(temp);
@@ -41,8 +43,8 @@ int main(int argc, char** argv)
 	SDL_SetRenderDrawColor(renderer, 255, 76, 0, 0);
 	int circlepos = 0, circletexturepos = 0;
 	int tmpCub = 0, pressedbutonfight = -1, cubiknum = 0;
-	float cubiklifetime = 0, rotatelifetime = 0;
-	bool rotate = false;
+	float rotatelifetime = 0;
+	bool rotate = false, cubepress = false;
 	initPlayer(&igrok);
 	while (isRunning)
 	{
@@ -57,7 +59,29 @@ int main(int argc, char** argv)
 
 			case SDLK_ESCAPE: {isRunning = false; return 0;} break;
 			}
+			case SDL_MOUSEBUTTONDOWN:
+			{
+				switch (ev.button.button)
+				{
+				case SDL_BUTTON_LEFT: {
+					if (wind == 0)
+					{
+						cubepress = true;break;
+					}
+					if (wind == 1)//obrabotka krotov
+					{
+						
+					}
 
+					if (wind == 3)
+					{
+
+					}
+
+				}break;
+				
+				}
+			}break;
 			case SDL_MOUSEMOTION:
 			{
 				mousepos.x = ev.motion.x; mousepos.y = ev.motion.y;
@@ -69,14 +93,21 @@ int main(int argc, char** argv)
 				double dt = (currentTicks - lastTicks)*0.001;
 				lastTicks = currentTicks;
 
-				if (startispressed(mousepos) && rotate == false)
+				if (startispressed(mousepos,cubepress) && rotate == false)
 				{
+					cubepress = false;
 					tmpCub = getrand(1, 6);
+					circletexturepos = circlepos;
 					circlepos += tmpCub;
-					//ogranichenie segmenta
+					if (circlepos>6)
+					{
+						circlepos = 0;
+					}	//ogranichenie segmenta
 
-					cubiklifetime = 4000;
-					rotate == true;
+					cubiknum = tmpCub;
+					cubetextpos.x = tmpCub * 200-200;
+					rotate = true;
+					rotatelifetime = 2000;
 				}
 				if (rotate == true)
 				{
@@ -86,11 +117,17 @@ int main(int argc, char** argv)
 					}
 					else
 					{
-						if (rotatelifetime < 0)
+						if (rotatelifetime > 0)
 						{
 							circletexturepos++;
+							wheltextpos.x = 900*circletexturepos-900;
+							if (wheltextpos.x>5400)
+							{
+								wheltextpos.x = 0;
+							}
 							//povorot texturi kolesa na 1 segment
 							rotatelifetime = 2000;
+							SDL_Delay(200);
 						}
 						else
 						{
@@ -105,12 +142,9 @@ int main(int argc, char** argv)
 				SDL_RenderCopy(renderer, textwheel, &wheltextpos,NULL );//render colesa
 				SDL_RenderCopy(renderer, pointer,NULL, &pointerPos);//render player
 				//render stats,money
-				if (cubiklifetime > 0)
-				{
-					cubiklifetime -= dt;
-					//SDL_RenderCopy(renderer, pointer, &pointerPos, NULL);
-				}//render cubika
-
+				SDL_RenderCopy(renderer, pointer, &pointerPos, NULL);
+				//render cubika
+				SDL_RenderCopy(renderer, cubetext, &cubetextpos, &cuberend );
 				SDL_RenderPresent(renderer);
 				SDL_RenderClear(renderer);
 			}

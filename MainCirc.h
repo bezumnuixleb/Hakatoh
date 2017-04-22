@@ -8,4 +8,4 @@ struct Circle
 	
 };
 
-bool startispressed(SDL_Point mpos);
+bool startispressed(SDL_Point mpos,bool shop);

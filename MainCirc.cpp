@@ -2,9 +2,9 @@
 #include "SDL.h"
 #include "Add.h"
 
-bool startispressed(SDL_Point mpos)
+bool startispressed(SDL_Point mpos,bool shoot)
 {
-	if (PInRect(mpos, { 0,0 }, { 0,0 }))//knopka najata
+	if (PInRect(mpos, {353,371 }, { 553,571 })&&shoot==true)//knopka najata
 	{
 		return true;
 	}
