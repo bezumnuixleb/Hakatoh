@@ -1,5 +1,7 @@
 #include <iostream>
 #include "SDL.h"
+#include "MainCirc.h"
+#include "Add.h"
 
 #define WINDOW_SIZE_W 1280
 #define WINDOW_SIZE_H 1024
@@ -16,6 +18,8 @@ int main(int argc, char** argv)
 	SDL_Point mousepos;
 	SDL_SetRenderDrawColor(renderer, 255, 76, 0, 0);
 	int circlepos = 0;
+	int tmpCub = 0;
+	float cubiklifetime = 0;
 	bool rotate = false;
 	while (isRunning)
 	{
@@ -38,10 +42,22 @@ int main(int argc, char** argv)
 		}
 		if (wind==0)//вращение круга 
 		{
+			if (startispressed(mousepos))
+			{
+				tmpCub=getrand(1, 6);
+				circlepos += tmpCub;
+				cubiklifetime = 4000;
+				rotate == true;
+			}
 			if (rotate == false)
 			{
 				
 			}
+			//render zadnika
+			//render colesa
+			//render player
+			//render stats,money
+			//render cubika
 		}
 		if (wind == 1)//окно боя
 		{
