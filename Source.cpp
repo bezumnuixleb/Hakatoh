@@ -3,17 +3,24 @@
 #include "MainCirc.h"
 #include "Add.h"
 #include "P.h"
+#include "Mouse.h"
+#include "SDL_ttf.h"
+#include <time.h>
 
 #define WINDOW_SIZE_W 900
 #define WINDOW_SIZE_H 900
 
 int main(int argc, char** argv)
 {
+	TTF_Init();
+	srand(time(0));
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Window* window = SDL_CreateWindow(u8"Afasdjsadhkash", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		WINDOW_SIZE_W, WINDOW_SIZE_H, SDL_WINDOW_SHOWN);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_RenderSetLogicalSize(renderer, WINDOW_SIZE_W, WINDOW_SIZE_H);
+	TTF_Font * font = TTF_OpenFont("eng.ttf", 25);//shrift
+	//text init
 	bool isRunning = true;
 	int wind = 0;
 	Player igrok;
@@ -108,7 +115,10 @@ int main(int argc, char** argv)
 			SDL_RenderPresent(renderer);
 			SDL_RenderClear(renderer);
 		}
-
+		if (wind==-1)
+		{
+			isRunning = false; return 0; break;
+		}
 
 	}
 
