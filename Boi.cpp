@@ -95,7 +95,8 @@ void initPlayer(Player *pl)
 	pl->spal_uron = 10;
 	pl->exp = 0;
 	pl->mane = 0;
-	pl->lvl = 0;
+	pl->lvl = 1;
+	
 }
 //enemy
 void Udar_V(Player *pl, Vrag *v)

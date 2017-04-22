@@ -17,7 +17,7 @@ struct Vrag
 
 struct Player
 {
-	int hp = 0;
+	int hp = 0,maxhp=0;
 	int mana = 0;
 	int brony = 0;
 	int uron = 0;
