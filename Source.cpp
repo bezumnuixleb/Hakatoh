@@ -13,8 +13,10 @@ int main(int argc, char** argv)
 	SDL_RenderSetLogicalSize(renderer, WINDOW_SIZE_W, WINDOW_SIZE_H);
 	bool isRunning = true;
 	int wind = 0;
+	SDL_Point mousepos;
 	SDL_SetRenderDrawColor(renderer, 255, 76, 0, 0);
-
+	int circlepos = 0;
+	bool rotate = false;
 	while (isRunning)
 	{
 		SDL_Event ev;
@@ -25,13 +27,21 @@ int main(int argc, char** argv)
 				isRunning = false; return 0; break;
 			case SDL_KEYDOWN:switch (ev.key.keysym.sym)
 			{
+			
 			case SDLK_ESCAPE: {isRunning = false; return 0;} break;
 			}
-			}
+			
+			case SDL_MOUSEMOTION:
+			{
+				mousepos.x = ev.motion.x; mousepos.y = ev.motion.y; 
+			}break;
 		}
 		if (wind==0)//вращение круга 
 		{
-
+			if (rotate == false)
+			{
+				
+			}
 		}
 		if (wind == 1)//окно боя
 		{
