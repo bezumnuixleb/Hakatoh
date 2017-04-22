@@ -1,6 +1,5 @@
 #include <iostream>
 #include <time.h>
-
 #include "P.h"
 
 void Udar_P(Player *pl, Vrag *v)
@@ -24,7 +23,8 @@ void Liv_P(Player *pl, Vrag *v)
 	int c = rand() % 100 + 1;
 	if (c < 36)
 	{
-		//выход
+		pl->xod = false;
+		v->xod = false;
 	}
 	else
 	{

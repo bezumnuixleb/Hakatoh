@@ -28,8 +28,6 @@ void draka_P(Player *pl, Vrag *v,int nagatie)
 		else if (nagatie == 3)
 		{
 			Liv_P(pl, v);
-			pl->xod = false;
-			v->xod = true;
 		}
 		if (nagatie == -1)
 		{
@@ -38,7 +36,7 @@ void draka_P(Player *pl, Vrag *v,int nagatie)
 		}
 	}
 }
-void draka_V(Player *pl, Vrag *v, int nagatie)
+void draka_V(Player *pl, Vrag *v)
 {
 	srand(time(NULL));
 	if (v->xod == true)
@@ -58,4 +56,3 @@ void draka_V(Player *pl, Vrag *v, int nagatie)
 		}
 	}
 }
-
