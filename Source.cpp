@@ -111,6 +111,8 @@ int main(int argc, char** argv)
 				}
 				if (rotate == true)
 				{
+					rotatelifetime -= dt;
+					printf_s("!%d\n", rotatelifetime);
 					if (circletexturepos == circlepos)
 					{
 						rotate = false;
@@ -120,24 +122,24 @@ int main(int argc, char** argv)
 						if (rotatelifetime < 0)
 						{
 							circletexturepos++;
-							if (circletexturepos>6)
+							if (circletexturepos>5)
 							{
 								circletexturepos = 0;
+								
 							}
-							wheltextpos.x = 900*circletexturepos;
 							if (wheltextpos.x>5400)
 							{
 								wheltextpos.x = 0;
 							}
-							//povorot texturi kolesa na 1 segment
+							wheltextpos.x = 900*circletexturepos;
+							printf_s("%d\n", wheltextpos.x);
+							
+							
 							rotatelifetime = 2000;
 							
 							
 						}
-						else
-						{
-							rotatelifetime -= dt;
-						}
+						
 					}
 					//ogranichenie segmenta
 
