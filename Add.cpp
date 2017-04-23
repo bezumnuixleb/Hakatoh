@@ -34,3 +34,9 @@ void rendWord(SDL_Renderer * rend, SDL_Rect Pos, int a,TTF_Font *font)
 	SDL_Texture* textrend = SDL_CreateTextureFromSurface(rend, temp);
 	SDL_RenderCopy(rend, textrend, NULL, &Pos);
 }
+void rendStr(SDL_Renderer * rend, SDL_Rect Pos, char buf[255], TTF_Font *font,SDL_Color TextColor)
+{
+	SDL_Surface* temp = TTF_RenderText_Solid(font, buf, TextColor);
+	SDL_Texture* textrend = SDL_CreateTextureFromSurface(rend, temp);
+	SDL_RenderCopy(rend, textrend, NULL, &Pos);
+}

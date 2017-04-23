@@ -28,7 +28,7 @@ int battleswitch(SDL_Point mpos)
 	{
 		return 2;
 	}
-	else if (PInRect(mpos, { 600,850 }, { 705,850 }))//leave try
+	else if (PInRect(mpos, { 600,750 }, { 705,855 }))//leave try
 	{
 		return 3;
 	}

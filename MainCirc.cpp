@@ -22,7 +22,7 @@ void sobitie(int circlepos, Player *igrok, int *wind,int *tovar1,int *tovar2, bo
 	case 0:return; break;
 	case 1: {*wind = 3; *tovar1 = getrand(0, 3); *tovar2 = getrand(0, 3); return; } break;
 	case 2: {*wind = 1; *fightstart = true; return; }break;
-	case 3: {igrok->hp += 50; }break;
+	case 3: {igrok->hp += 50;if (igrok->hp > igrok->maxhp)igrok->hp = igrok->maxhp; }break;
 	case 4: {igrok->mane += 400; }break;
 	case 5: *wind = 5; return; break;
 	}

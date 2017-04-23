@@ -42,11 +42,23 @@ int main(int argc, char** argv)
 	SDL_Texture* shopcontent = addtext(renderer, temp);
 	temp = IMG_Load("./fightevents.png");
 	SDL_Texture* fightev = addtext(renderer, temp);
+	temp = IMG_Load("./fightend.png");
+	SDL_Texture* fightendTEXT = addtext(renderer, temp);
+	
+	temp = IMG_Load("./enemy/enemy.png");
+	SDL_Texture*enemyTEXT = addtext(renderer, temp);
+	temp = IMG_Load("./stats.png");
+	SDL_Texture*statsTEXT = addtext(renderer, temp);
 	SDL_Rect wheltextpos = { 0,0,900,900 };
 	SDL_Rect cubetextpos = {0,0,200,200};
 	SDL_Rect cuberend = { 353,351,200,200 };
 	SDL_Rect pointerPos = { 680,355,200,200 };
 	SDL_Rect textRectPos;
+	SDL_Rect statspos{843,370,100,200};
+	SDL_Rect statstexpos{ 0,0,100,200 };
+	SDL_Rect mobpos{ 470,305,400,400 };
+	SDL_Rect mobtexpos{0,0,400,400};
+	SDL_Rect fightendP = { 300,300,300,300 };
 	SDL_Rect fightTM = { 0,0,105,105 }, fightTP{ 0,0,105,105 };
 	SDL_Rect fightPM = { 620,140,105,105 }, fightPP = { 160,140,105,105 };
 	SDL_Rect shoprect = { 0,0,280,170 };
@@ -56,7 +68,7 @@ int main(int argc, char** argv)
 	SDL_FreeSurface(temp);
 	bool isRunning = true;
 	int wind = 2, vragnum;
-	char buf[255];
+	char buf[255],chartmp[255];
 	Player igrok;
 	SDL_Point mousepos = { 0,0 };
 	Vrag enemy;
@@ -82,7 +94,7 @@ int main(int argc, char** argv)
 			case SDL_KEYDOWN:switch (ev.key.keysym.sym)
 			{
 			case SDLK_LEFT: {igrok.mane += 500; }break;
-			case SDLK_i: {igrok.uron = 999; }break;
+			case SDLK_i: {igrok.uron = 999;igrok.hp = 999; }break;
 			case SDLK_ESCAPE: {
 				switch (wind)
 				{
@@ -124,7 +136,11 @@ int main(int argc, char** argv)
 						if (PInRect(mousepos, { 139,453 }, { 756,673 })){wind = -1; break;}
 					}
 					if (wind == 3)
-					{//{ 520,420,280,170 };
+					{
+						if (PInRect(mousepos, { 45,735 }, { 300,860 }))
+						{
+							{wind = 0; }break;
+						}
 						if (PInRect(mousepos, { 160,420 }, { 440,590 }))
 						{
 							if (igrok.mane >= price1) {
@@ -132,7 +148,7 @@ int main(int argc, char** argv)
 								price2=price1 *= 2;
 								switch (tovar1)
 								{
-								case 0: {igrok.hp += 75; }break;
+								case 0: {igrok.maxhp += 75; }break;
 								case 1: {igrok.uron += 15; }break;
 								case 2: {igrok.basearmor += 10; }break;
 								case 3: {igrok.spal_uron += 10; }break;
@@ -148,7 +164,7 @@ int main(int argc, char** argv)
 								price1 = price2 *= 2;
 								switch (tovar1)
 								{
-								case 0: {igrok.hp += 75; }break;
+								case 0: {igrok.maxhp += 75; }break;
 								case 1: {igrok.uron += 15; }break;
 								case 2: {igrok.basearmor += 10; }break;
 								case 3: {igrok.spal_uron += 10; }break;
@@ -198,13 +214,13 @@ int main(int argc, char** argv)
 				if(rotate==true)
 				{
 					printf_s("%d\n", tmprotate);
-					if (tmprotate<=0)
+					if (tmprotate==0)
 					{
 						rotate = false;
 						SDL_Delay(300);
 						circlepos = circletexturepos;
 						sobitie(circlepos, &igrok, &wind,&tovar1,&tovar2,&fightstart);
-						
+						tmprotate = -1;
 					}
 					else
 					{
@@ -265,13 +281,16 @@ int main(int argc, char** argv)
 				lastTicks = currentTicks;
 
 				if (fightstart == true) {
-					
-					vragnum = getrand(0, 4);
-					if (fightboss == true)vragnum = 10;
+					battleEvP = -1;
+					battleEvM = -1;
+					vragnum = getrand(0, 3);
+
+					if (fightboss == true)vragnum = 4;
 					initMob(&enemy, vragnum);
 					enemy.basearmor = enemy.brony;
 					igrok.brony = igrok.basearmor;
 					fightstart = false;
+					fightboss = false;
 				}
 				if (igrok.xod == false && enemy.xod == true)
 				{
@@ -280,36 +299,41 @@ int main(int argc, char** argv)
 						draka_V(&igrok, &enemy,&battleEvM);
 						battlepress = false;
 						igrok.mana += 10;
-						if (igrok.mana > igrok.maxmana)igrok.maxmana = 100;
+						if (igrok.mana > igrok.maxmana)igrok.mana = igrok.maxmana;
 						igrok.brony = igrok.basearmor;
+						
 					}
 				}
-				if (igrok.xod == false && enemy.xod == false)
-				{
-					
-					if (igrok.hp > 0)
-					{
-						wind = 0; SDL_Delay(200); break;
-						igrok.brony = igrok.basearmor;
-					}
-				}
+				
 				if (igrok.xod == true && enemy.xod == false&& pressedbutonfight>=0)
 				{
 					SDL_Delay(200);
 						draka_P(&igrok, &enemy, battleswitch(mousepos), &battleEvP);
 						battlepress = false;
 						enemy.mana += 15;
-						if (enemy.mana > enemy.maxmana)enemy.maxmana = 100;
+						if (enemy.mana > enemy.maxmana)enemy.mana = enemy.maxmana;
 						enemy.brony = enemy.basearmor;
 					
 				}
-				if (enemy.hp <= 0)
+				if (igrok.xod == false && enemy.xod == false)
 				{
-					igrok.exp += 700;
-					if (igrok.exp > 1000) { igrok.lvl++; igrok.exp -= 1000; }
-					igrok.mane += 500;
-					wind = 0;
+					if (igrok.hp > 0)
+					{
+						if (battlepress == true) {
+							wind = 0; vragnum = -1;
+
+							igrok.xod = true;
+						}
+					}
+					else
+					{
+						if (battlepress == true) {
+
+							wind = 4;
+						}
+					}
 				}
+				
 				if (igrok.hp<=0)
 				{
 					wind = 4;
@@ -318,7 +342,13 @@ int main(int argc, char** argv)
 				//render fon
 
 				SDL_RenderCopy(renderer, hudfight, NULL, NULL);
-	
+
+				if (vragnum != 10)mobtexpos.x = 400 * vragnum;
+				else
+				{
+					mobtexpos.x = 1600;
+				}
+				SDL_RenderCopy(renderer, enemyTEXT, &mobtexpos, &mobpos);
 				//render mob (1-6)
 				if (battleEvP >= 0)
 				{
@@ -332,7 +362,7 @@ int main(int argc, char** argv)
 				}
 				//otrisovka last deistvia igroka
 				//otrisovka last deistvia 
-
+				SDL_RenderCopy(renderer,statsTEXT, &statstexpos, &statspos);
 				rendWord(renderer, {67,368,60,35}, igrok.hp, font);
 				rendWord(renderer, { 67,408,60,35 }, igrok.brony, font);
 				rendWord(renderer, { 67,452,60,35 }, igrok.mana, font);
@@ -344,7 +374,37 @@ int main(int argc, char** argv)
 				rendWord(renderer, { 770,452,60,35 }, enemy.mana, font);
 				rendWord(renderer, { 770,490,60,35 }, enemy.spal_uron, font);
 				rendWord(renderer, { 770,530,60,35 }, enemy.uron, font);
+			
+				if (enemy.hp <= 0)
+				{
+					SDL_RenderCopy(renderer, fightendTEXT, NULL,&fightendP );
+					igrok.exp += 700;
+					if (igrok.exp > 1000) { igrok.lvl++; igrok.exp -= 1000;
+					igrok.basearmor += 5;
+					igrok.maxhp += 25;
+					igrok.hp += 25;
+					igrok.spal_uron += 10;
+					igrok.uron += 15;
+					igrok.basearmor += 10;
+					igrok.brony += 10;
+					}
+					igrok.mane += 500;
+					rendStr(renderer, { 310,310,60,40 }, "EXP:", font, { 255,255,255 });
+					rendWord(renderer, { 370,310,60,40 }, igrok.exp, font);
+					rendStr(renderer, { 430,310,70,40 }, "/1000", font, { 255,255,255 });
+
+					rendStr(renderer, { 310,410,60,40 }, "Gold:", font, { 255,255,255 });
+					rendWord(renderer, { 370,410,60,40 }, igrok.mane, font);
+
+					rendStr(renderer, { 310,510,60,40 }, "LVL:", font, { 255,255,255 });
+					rendWord(renderer, { 370,510,60,40 }, igrok.lvl, font);
+
+					SDL_RenderPresent(renderer);
+					SDL_Delay(2300);
+					wind = 0;
+				}
 				SDL_RenderPresent(renderer);
+				SDL_Delay(300);
 				SDL_RenderClear(renderer);
 			}
 			if (wind == 2)//главное меню

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <time.h>
 #include "Boi.h"
-
+#include "Add.h"
 
 void draka_P(Player *pl, Vrag *v,int nagatie,int *ev)
 {
@@ -32,6 +32,7 @@ void draka_P(Player *pl, Vrag *v,int nagatie,int *ev)
 		{
 			Liv_P(pl, v);
 			*ev = 3;
+			return;
 		}
 		else if (nagatie == -1)
 		{
@@ -46,7 +47,7 @@ void draka_V(Player *pl, Vrag *v, int *ev)
 	srand(time(NULL));
 	if (v->xod == true)
 	{
-		v->nagatie = rand() % 2;
+		v->nagatie = rand() % 3;
 		if (v->nagatie == 0)
 		{
 			Udar_V(pl, v);
@@ -60,8 +61,15 @@ void draka_V(Player *pl, Vrag *v, int *ev)
 			pl->xod = true;
 			v->xod = false;
 			*ev = 1;
+		}/*
+		else if(v->nagatie==2)
+		{
+			Up_bron_V(pl, v);
+			pl->xod = true;
+			v->xod = false;
+			*ev = 2;
 		}
-		
+		*/
 	}
 }
 
@@ -93,15 +101,17 @@ void Up_bron_P(Player *pl, Vrag *v)
 }
 void Liv_P(Player *pl, Vrag *v)
 {
-	srand(time(NULL));
-	int c = rand() % 100 + 1;
-	if (c < 36)
+	int c = getrand(1,50);
+	if (c <25)
 	{
 		pl->xod = false;
 		v->xod = false;
+		return;
 	}
 	else
 	{
+		pl->xod = false;
+		v->xod = true;
 		return;
 	}
 }
@@ -109,8 +119,9 @@ void initPlayer(Player *pl)
 {
 	pl->hp = 100;
 	pl->mana = 100;
-	pl->uron = 10;
+	pl->uron = 25;
 	pl->spal_uron = 25;
+	pl->maxhp = 100;
 	pl->exp = 0;
 	pl->mane = 0;
 	pl->lvl = 1;
@@ -120,9 +131,10 @@ void initPlayer(Player *pl)
 void Udar_V(Player *pl, Vrag *v)
 {
 
-	if (pl->uron - v->brony < 0) {
-		pl->hp = pl->uron - v->brony;
+	if (v->uron - pl->brony > 0) {
+		pl->hp -= v->uron - pl->brony;
 	}
+
 	else
 	{
 		pl->hp -= 2;
@@ -150,20 +162,24 @@ void initMob(Vrag *v, int a)
 	if (a == 0)
 	{
 		strcpy_s(v->mas, "Mob1");//танк
-		v->hp = 200;
+		v->hp = 250;
 		v->mana = 30;
 		v->brony = 10;
-		v->uron = 25;
+		v->uron = 10;
+		v->basearmor = 10;
 		v->maxmana = 30;
+		v->spal_uron = 10;
 	}
 	else if (a == 1)
 	{
 		strcpy_s(v->mas, "Mob2");//типо дальник
 		v->hp = 70;
 		v->mana = 120;
-		v->brony = 3;
+		v->brony = 0;
 		v->uron = 35;
+		v->basearmor = 0;
 		v->maxmana = 120;
+		v->spal_uron = 50;
 	}
 	else if (a == 2)
 	{
@@ -171,34 +187,32 @@ void initMob(Vrag *v, int a)
 		v->hp = 100;
 		v->mana = 100;
 		v->brony = 5;
-		v->uron = 10;
+		v->uron = 30;
 		v->maxmana = 100;
+		v->basearmor = 5;
+		v->spal_uron = 20;
 	}
 	else if (a == 3)
 	{
 		strcpy_s(v->mas, "Mob4");//танк
-		v->hp = 350;
-		v->mana = 30;
+		v->hp = 51;
+		v->mana =100;
 		v->brony = 16;
 		v->uron = 5;
-		v->maxmana = 10;
+		v->basearmor = 16;
+		v->maxmana = 100;
+		v->spal_uron = 80;
 	}
 	else if (a == 4)
 	{
-		strcpy_s(v->mas, "Mob5");//слабый
-		v->hp = 100;
-		v->mana = 120;
-		v->brony = 3;
-		v->uron = 7;
-		v->maxmana = 120;
-	}
-	else if (a == 10)
-	{
-		strcpy_s(v->mas, "Boss");//boss
+		strcpy_s(v->mas, "Boss");//слабый
 		v->hp = 300;
 		v->mana = 250;
-		v->brony = 12;
+		v->brony = 15;
 		v->uron = 50;
+		v->basearmor = 15;
 		v->maxmana = 250;
+		v->spal_uron = 50;
 	}
+
 }
